@@ -1,0 +1,71 @@
+" Vim syntax file
+" Language: Unsuspected Hangeul
+" Maintainer: dragonteros
+" Latest Revision: 2020-09-06
+
+if exists('b:current_syntax')
+  finish
+endif
+
+set re=2  " to avoid E945
+
+" Syntax Group Definition "
+
+syn match space '<_>\+'
+syn match num '[ETC]*[NUM][NUMETC]*'
+
+
+" Argument Reference with no Literal ahead
+"" ieung & ieung_num
+syn match argref '[IEUNGIEUNG_NUM][NUMETC]*'
+"" num_ieung
+syn match argref '\(<s>[ETCNUM_+]*\)\@<![NUM_IEUNG][NUMETC]*'
+syn match argref '\(<s>[ETCNUM_+]*[NUM_IEUNG]\)\@<=[ETC]*\([NUM][NUMETC]*\|[NUM_+]\)'
+"" no ieung_hieuh
+
+" Argument with Literal ahead
+"" ieung & ieung_num
+syn match arglit '<s>\@<=[ETC]*[NUM][NUMETC]*<_>*[ETC]*[IEUNGIEUNG_NUM][NUMETC]*'
+"" num_ieung
+syn match arglit '<s>\@<=[NUMETC]*[NUM_IEUNG][NUMETC]*'
+"" ieung_hieuh
+syn match arglit '<s>\@<=[ETC]*[NUM][NUMETC]*<_>*[ETC]*\([IEUNG_HIEUH]\)\@='
+
+
+" Function Def
+syn match fundef '[*_HIEUH][ETC]*\([NUM_*]\)\@!'
+
+" Function Call
+"" hieuh & ieung_hieuh
+syn match funcall '[IEUNG_HIEUHHIEUH][ETC]*[NUM][NUMETC]*'
+syn match funcall '[IEUNG_HIEUHHIEUH][NUMETC]*\([NUM_+]\)\@='
+"" hieuh_num
+syn match funcall '[HIEUH_NUM][NUMETC]*'
+"" num_hieuh
+syn match funcall '\(<s>[ETCNUM_+]*\)\@<![NUM_HIEUH][NUMETC]*'
+syn match funcall '\(<s>[ETCNUM_+]*[NUM_HIEUH]\)\@<=[ETC]*\([NUM][NUMETC]*\|[NUM_+]\)'
+
+" Function Literal (before FunCall)
+"" hieuh & hieuh_num
+syn match funlit '<s>\@<=[ETC]*[NUM][NUMETC]*<_>*[ETC]*\([HIEUH][ETC]*[NUM_*]\|[HIEUH_NUM]\)\@='
+"" num_hieuh
+syn match funlit '<s>\@<=[ETC]*[NUM_HIEUH]\([ETC]*[NUM_*]\)\@='
+syn match funlit '<s>\@<=[ETC]*[NUM][NUMETC]*\([NUM_HIEUH][ETC]*[NUM_*]\)\@='
+"" no ieung_hieuh
+
+
+" Syntax Highlighting "
+
+let b:current_syntax = 'pbhhg'
+
+hi def link space Comment
+hi def link num Constant
+
+hi def link funlit Special
+
+hi def link argref Identifier
+hi def link arglit Identifier
+
+hi def link fundef Type
+hi def link funcall Statement
+
